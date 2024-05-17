@@ -13,21 +13,21 @@ Notifications.setNotificationHandler({
 });
 
 export async function registerForPushNotificationsAsync(): Promise<string | null> {
-    let token: string | null = null;
+  let token: string | null = null;
 
-    const { status: existingStatus } = await Notifications.getPermissionsAsync();
-    let finalStatus = existingStatus;
+  const { status: existingStatus } = await Notifications.getPermissionsAsync();
+  let finalStatus = existingStatus;
 
-    if (existingStatus !== "granted") {
-        const { status } = await Notifications.requestPermissionsAsync();
-        finalStatus = status;
-    }
-    
-    if(finalStatus !== "granted") {
-        return null;
-    }
-    
-    try {
+  if (existingStatus !== "granted") {
+    const { status } = await Notifications.requestPermissionsAsync();
+    finalStatus = status;
+  }
+
+  if (finalStatus !== "granted") {
+    return null;
+  }
+
+  try {
     const response = await Notifications.getExpoPushTokenAsync();
     token = response.data;
 
@@ -47,39 +47,39 @@ export async function registerForPushNotificationsAsync(): Promise<string | null
   }
 }
 
-export async function scheduleMedicationReminder(medication: Medication): Promise<string | undefined>{
-   //check for each time the medication is to be taken
-  if(!medication.reminderEnabled) return;
-   try{
-    for( const time of medication.times){
-        const [hours, minutes] = time.split(":").map(Number);
-        const today = new Date();
-        today.setHours(hours,minutes,0,0);
- 
-       //check if time for today has passed
-       if(today < new Date()){
-           today.setDate(today.getDate() + 1); // set to tomorrow
-       }
-       const identifier = await Notifications.scheduleNotificationAsync({
+export async function scheduleMedicationReminder(medication: Medication): Promise<string | undefined> {
+  //check for each time the medication is to be taken
+  if (!medication.reminderEnabled) return;
+  try {
+    for (const time of medication.times) {
+      const [hours, minutes] = time.split(":").map(Number);
+      const today = new Date();
+      today.setHours(hours, minutes, 0, 0);
+
+      //check if time for today has passed
+      if (today < new Date()) {
+        today.setDate(today.getDate() + 1); // set to tomorrow
+      }
+      const identifier = await Notifications.scheduleNotificationAsync({
         content: {
           title: "Medication Reminder",
           body: `Time to take ${medication.name} (${medication.dosage})`,
           data: { medicationId: medication.id },
         },
         trigger: {
-           hour: hours,
-           minute: minutes,
-           repeats: true,s
+          hour: hours,
+          minute: minutes,
+          repeats: true, seconds: 0,
         },
       });
 
       return identifier;
 
     }
-   }catch(error){
-        console.error("Error scheduling medication reminder:", error);
-        return undefined;
-   }
+  } catch (error) {
+    console.error("Error scheduling medication reminder:", error);
+    return undefined;
+  }
 }
 
 export async function cancelMedicationReminders(medicationId: string): Promise<void> {
