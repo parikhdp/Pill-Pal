@@ -202,7 +202,7 @@ export default function HomeScreen(){
               )}
           </View>
           
-          <Modal visible={true} transparent={true} animationType="slide">
+          <Modal visible={false} transparent={true} animationType="slide">
             <View style={styles.modalOverlay}>
               <View style={styles.modalContent}>
                 <Text style={styles.modalTitle}>Notification</Text>
@@ -223,9 +223,7 @@ export default function HomeScreen(){
                    </View>
               ))}
             </View>
-
           </Modal>
-
         </ScrollView>
     );
 }
