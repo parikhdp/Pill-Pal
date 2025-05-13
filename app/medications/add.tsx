@@ -1,3 +1,5 @@
+import { scheduleMedicationReminder } from "@/utils/notifications";
+import { addMedication } from "@/utils/storage";
 import { Ionicons } from "@expo/vector-icons";
 import DateTimePicker from "@react-native-community/datetimepicker";
 import { LinearGradient } from "expo-linear-gradient";
@@ -114,7 +116,7 @@ const handleSave = async () => {
       
       //to schedule reminders if enabled
       if(medicationData.reminderEnabled){
-        await scheduledMedicationReminder(medicationData);
+        await scheduleMedicationReminder(medicationData);
       }
       Alert.alert(
         "Success",
@@ -151,6 +153,10 @@ const renderFrequencyOptions = () => {
               styles.optionCard,
               selectedFrequency=== freq.label && styles.selectedOptionCard,
             ]}
+            onPress={()=>{
+              setSelectedFrequency(freq.label);
+              setForm({...form,frequency: freq.label});
+            }}
             >
              <View style={[
                 styles.optionIcon,
@@ -180,7 +186,12 @@ const renderDurationOptions = () => {
             style={[
               styles.optionCard,
               selectedDuration=== dur.label && styles.selectedOptionCard
-            ]}>
+            ]}
+            onPress={()=>{
+              setSelectedDuration(dur.label);
+              setForm({...form,duration: dur.label});
+            }}
+            >
                 <Text style={[
               styles.durationNumber,
               selectedDuration=== dur.label && styles.selectedDurationNumber,
@@ -206,14 +217,13 @@ const renderDurationOptions = () => {
              style={styles.headerGradient}/>
              <View style={styles.content}>
                 <View style={styles.header}>
-                    <TouchableOpacity style={styles.backButton}>
+                    <TouchableOpacity style={styles.backButton} onPress={() => router.back()}>
                         <Ionicons name="chevron-back" size={28} color="black" />
                     </TouchableOpacity>
                     <Text style={styles.headerTitle}>New Medication</Text>
                 </View>
-                //Scroll view for Input from the user
                 <ScrollView showsVerticalScrollIndicator={false} style={{flex:1}}
-                contentContainerStyle={styles.formContentContainer}>//more semantic and reliable since it applies to the scrollable content to give the style here than view inside
+                contentContainerStyle={styles.formContentContainer}> {/*more semantic and reliable since it applies to the scrollable content to give the style here than view inside*/}
                   <View style={styles.section}>
                     <View style={styles.inputContainer}>
                         <TextInput
@@ -313,14 +323,14 @@ const renderDurationOptions = () => {
                               setForm((prev)=>({
                                 ...prev,
                                 times:prev.times.map((t,i)=>
-                                  i===0 ? newTime : t
-                                ),
-                              }))
+                                  (i===0 ? newTime : t)),
+                              }));
                             }
                            }}
                          />
                         )}
                     </View>
+
                   {/* Reminder*/}
                   <View style={styles.section}>
                     <View style={styles.card}>
@@ -368,8 +378,9 @@ const renderDurationOptions = () => {
                   style={[
                     styles.saveButton,
                     isSubmitting && styles.saveButtonDisabled,
-
-                  ]}>
+                  ]}
+                    onPress={()=>handleSave()}
+                    >
                   <LinearGradient
                      colors={['#f5a9c4', '#f48fb1']}
                      style={styles.saveButtonGradient}
@@ -477,8 +488,8 @@ const styles=StyleSheet.create({
     elevation: 2,
   },
   selectedOptionCard: {
-    backgroundColor: "#1a8e2d",
-    borderColor: "#1a8e2d",
+    backgroundColor: "#f5a9c4",
+    borderColor: "#f5a9c4",
   },
   optionIcon: {
     width: 50,

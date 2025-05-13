@@ -1,9 +1,10 @@
 import { Ionicons } from "@expo/vector-icons";
 import { LinearGradient } from "expo-linear-gradient";
 import { Link, useRouter } from "expo-router";
-import { useEffect, useRef } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import { Animated, Dimensions, Modal, ScrollView, StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import Svg, { Circle } from "react-native-svg";
+import { DoseHistory, Medication, getMedications, getTodaysDoses } from './../utils/storage';
 const {width}=Dimensions.get('window');
 const AnimatedCircle = Animated.createAnimatedComponent(Circle);
 const quick_actions=[
@@ -96,7 +97,49 @@ function CircularProgress({
   )
 }
 export default function HomeScreen(){
-  const {router} = useRouter();
+  const router = useRouter();
+  const [showNotifications, setShowNotifications] = useState(false);
+  const [medications, setMedications] = useState<Medication[]>([]);
+  const [todaysMedications,setTodaysMedications]=useState<Medication[]>([]);
+  const [completedDoses, setCompletedDoses] = useState(0);
+  const [doseHistory, setDoseHistory] = useState<DoseHistory[]>([]);
+
+  const loadMedications= useCallback(async()=>{
+    try{
+      const [allMedications, todaysDoses] = await Promise.all([
+        getMedications(),
+        getTodaysDoses(),
+      ]);
+
+      setDoseHistory(todaysDoses);
+      setMedications(allMedications);
+
+      //filter medications to only include what should be taken today
+      const today = new Date();
+      const todayMeds = allMedications.filter((med) => {
+      const startDate = new Date(med.startDate);
+      const durationDays = parseInt(med.duration.split(" ")[0]);
+      // For ongoing medications or if within duration
+        if (
+          durationDays === -1 ||
+          (today >= startDate &&
+            today <=new Date(startDate.getTime() + durationDays * 24 * 60 * 60 * 1000))
+        ) {
+          return true;
+        }
+        return false;
+      });
+
+      setTodaysMedications(todayMeds);
+
+      // Calculate completed doses
+      const completed = todaysDoses.filter((dose) => dose.taken).length;
+      setCompletedDoses(completed);
+    }catch(error){   
+      console.error("Error loading medications:", error);
+    }
+  },[]);
+  //Fetching all the medication to show it in todays schedule
     return(
 
         <ScrollView showsVerticalScrollIndicator={false} style={styles.container}>

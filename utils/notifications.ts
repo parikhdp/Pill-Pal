@@ -1,133 +1,117 @@
-import AsyncStorage from '@react-native-async-storage/async-storage';
+import * as Notifications from "expo-notifications";
+import { Platform } from "react-native";
+import { Medication } from './storage';
 
-const MEDICATIONS_KEY="@medications";
-const DOSE_HISTORY_KEY="@dose_History";
+Notifications.setNotificationHandler({
+  handleNotification: async () => ({
+    shouldShowAlert: true,
+    shouldPlaySound: true,
+    shouldSetBadge: true,
+    shouldShowBanner: true,
+    shouldShowList: true,
+  }),
+});
 
-export interface Medication {
-    id: string;
-    name: string;
-    dosage: string;
-    times: string[];
-    startDate: string;
-    duration: string;
-    color: string;
-    reminderEnabled: boolean;
-    currentSupply: number;
-    totalSupply: number;
-    refillAt: number;
-    refillReminder: boolean;
-    lastRefillDate?: string;
+export async function registerForPushNotificationsAsync(): Promise<string | null> {
+    let token: string | null = null;
+
+    const { status: existingStatus } = await Notifications.getPermissionsAsync();
+    let finalStatus = existingStatus;
+
+    if (existingStatus !== "granted") {
+        const { status } = await Notifications.requestPermissionsAsync();
+        finalStatus = status;
+    }
+    
+    if(finalStatus !== "granted") {
+        return null;
+    }
+    
+    try {
+    const response = await Notifications.getExpoPushTokenAsync();
+    token = response.data;
+
+    if (Platform.OS === "android") {
+      await Notifications.setNotificationChannelAsync("default", {
+        name: "default",
+        importance: Notifications.AndroidImportance.MAX,
+        vibrationPattern: [0, 250, 250, 250],
+        lightColor: "#f48fb1",
+      });
+    }
+
+    return token;
+  } catch (error) {
+    console.error("Error getting push token:", error);
+    return null;
   }
-  
-  export interface DoseHistory {
-    id: string;
-    medicationId: string;
-    timestamp: string;
-    taken: boolean;
-  }
-
-export async function getMedications(): Promise<Medication[]> {
-     try{
-        const data = await AsyncStorage.getItem(MEDICATIONS_KEY);
-        return data ? JSON.parse(data) : [];
-     } catch(error){
-         console.error("Error getting medications:", error);
-         return [];
-     }
 }
 
-export async function addMedication(medication: Medication): Promise<void> {
-    try{
-        const medications = await getMedications(); //get existing medications first so that we dont over write 
-        medications.push(medication);
-        await AsyncStorage.setItem(MEDICATIONS_KEY, JSON.stringify(medications));
-    } catch(error){
-         throw error; //this means it ets it be handled instead if just logging it
-    }
-} 
+export async function scheduleMedicationReminder(medication: Medication): Promise<string | undefined>{
+   //check for each time the medication is to be taken
+  if(!medication.reminderEnabled) return;
+   try{
+    for( const time of medication.times){
+        const [hours, minutes] = time.split(":").map(Number);
+        const today = new Date();
+        today.setHours(hours,minutes,0,0);
+ 
+       //check if time for today has passed
+       if(today < new Date()){
+           today.setDate(today.getDate() + 1); // set to tomorrow
+       }
+       const identifier = await Notifications.scheduleNotificationAsync({
+        content: {
+          title: "Medication Reminder",
+          body: `Time to take ${medication.name} (${medication.dosage})`,
+          data: { medicationId: medication.id },
+        },
+        trigger: {
+           hour: hours,
+           minute: minutes,
+           repeats: true,s
+        },
+      });
 
-export async function updateMedication(
-    updatedMedication: Medication
-  ): Promise<void> {
-    try {
-      const medications = await getMedications();
-      const index = medications.findIndex(
-        (med) => med.id === updatedMedication.id
-      );
-      if (index !== -1) {
-        medications[index] = updatedMedication;
-        await AsyncStorage.setItem(MEDICATIONS_KEY, JSON.stringify(medications));
+      return identifier;
+
+    }
+   }catch(error){
+        console.error("Error scheduling medication reminder:", error);
+        return undefined;
+   }
+}
+
+export async function cancelMedicationReminders(medicationId: string): Promise<void> {
+  try {
+    const scheduledNotifications =
+      await Notifications.getAllScheduledNotificationsAsync();
+
+    for (const notification of scheduledNotifications) {
+      const data = notification.content.data as {
+        medicationId?: string;
+      } | null;
+      if (data?.medicationId === medicationId) {
+        await Notifications.cancelScheduledNotificationAsync(
+          notification.identifier
+        );
       }
-    } catch (error) {
-      console.error("Error updating medication:", error);
-      throw error;
     }
+  } catch (error) {
+    console.error("Error canceling medication reminders:", error);
   }
-  
-  export async function deleteMedication(id: string): Promise<void> {
-    try {
-      const medications = await getMedications();
-      const updatedMedications = medications.filter((med) => med.id !== id);
-      await AsyncStorage.setItem(
-        MEDICATIONS_KEY,
-        JSON.stringify(updatedMedications)
-      );
-    } catch (error) {
-      console.error("Error deleting medication:", error);
-      throw error;
-    }
+}
+
+export async function updateMedicationReminders(
+  medication: Medication
+): Promise<void> {
+  try {
+    // Cancel existing reminders to prevent duplicates
+    await cancelMedicationReminders(medication.id);
+
+    // Schedule new reminders
+    await scheduleMedicationReminder(medication);
+  } catch (error) {
+    console.error("Error updating medication reminders:", error);
   }
-  export async function getDoseHistory(): Promise<DoseHistory[]> {
-    try {
-      const data = await AsyncStorage.getItem(DOSE_HISTORY_KEY);
-      return data ? JSON.parse(data) : [];
-    } catch (error) {
-      console.error("Error getting dose history:", error);
-      return [];
-    }
-  }
-  
-  export async function getTodaysDoses(): Promise<DoseHistory[]> {
-    try {
-      const history = await getDoseHistory();
-      const today = new Date().toDateString();
-      return history.filter(
-        (dose) => new Date(dose.timestamp).toDateString() === today
-      );
-    } catch (error) {
-      console.error("Error getting today's doses:", error);
-      return [];
-    }
-  }
-  
-  export async function recordDose(
-    medicationId: string,
-    taken: boolean,
-    timestamp: string
-  ): Promise<void> {
-    try {
-      const history = await getDoseHistory();
-      const newDose: DoseHistory = {
-        id: Math.random().toString(36).substr(2, 9),
-        medicationId,
-        timestamp,
-        taken,
-      };
-  
-      history.push(newDose);
-      await AsyncStorage.setItem(DOSE_HISTORY_KEY, JSON.stringify(history));
-    } catch (error) {
-      console.error("Error recording dose:", error);
-      throw error;
-    }
-  }
-  
-  export async function clearAllData(): Promise<void> {
-    try {
-      await AsyncStorage.multiRemove([MEDICATIONS_KEY, DOSE_HISTORY_KEY]); // Clear both keys
-    } catch (error) {
-      console.error("Error clearing data:", error);
-      throw error;
-    }
-  }
-  
+}
