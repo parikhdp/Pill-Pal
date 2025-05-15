@@ -115,3 +115,4 @@ export async function updateMedicationReminders(
     console.error("Error updating medication reminders:", error);
   }
 }
+
