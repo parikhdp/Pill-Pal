@@ -1,7 +1,7 @@
-import AsyncStorage from '@react-native-async-storage/async-storage';
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 const MEDICATIONS_KEY = "@medications";
-const DOSE_HISTORY_KEY = "@dose_History";
+const DOSE_HISTORY_KEY = "@dose_history";
 
 export interface Medication {
   id: string;
@@ -38,11 +38,12 @@ export async function getMedications(): Promise<Medication[]> {
 
 export async function addMedication(medication: Medication): Promise<void> {
   try {
-    const medications = await getMedications(); //get existing medications first so that we dont over write 
+    const medications = await getMedications();
     medications.push(medication);
     await AsyncStorage.setItem(MEDICATIONS_KEY, JSON.stringify(medications));
   } catch (error) {
-    throw error; //this means it ets it be handled instead if just logging it
+    console.error("Error adding medication:", error);
+    throw error;
   }
 }
 
@@ -77,6 +78,7 @@ export async function deleteMedication(id: string): Promise<void> {
     throw error;
   }
 }
+
 export async function getDoseHistory(): Promise<DoseHistory[]> {
   try {
     const data = await AsyncStorage.getItem(DOSE_HISTORY_KEY);
@@ -116,6 +118,16 @@ export async function recordDose(
 
     history.push(newDose);
     await AsyncStorage.setItem(DOSE_HISTORY_KEY, JSON.stringify(history));
+
+    // Update medication supply if taken
+    if (taken) {
+      const medications = await getMedications();
+      const medication = medications.find((med) => med.id === medicationId);
+      if (medication && medication.currentSupply > 0) {
+        medication.currentSupply -= 1;
+        await updateMedication(medication);
+      }
+    }
   } catch (error) {
     console.error("Error recording dose:", error);
     throw error;
@@ -124,7 +136,7 @@ export async function recordDose(
 
 export async function clearAllData(): Promise<void> {
   try {
-    await AsyncStorage.multiRemove([MEDICATIONS_KEY, DOSE_HISTORY_KEY]); // Clear both keys
+    await AsyncStorage.multiRemove([MEDICATIONS_KEY, DOSE_HISTORY_KEY]);
   } catch (error) {
     console.error("Error clearing data:", error);
     throw error;
