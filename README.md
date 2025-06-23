@@ -66,25 +66,26 @@ To run this project locally:
 ## 📸 App Screenshots
 
 ### 🔐 Authentication Page  
-![Authentication Page](assets/screenshots/authentication-page.png)
+![Authentication Page](assets/screenshots/authentication-page.jpg)
 
 ### 🔓 iPhone Lock Screen (Password Entry)  
-![iPhone Lock Screen](assets/screenshots/iphone-lock-screen.png)
+![iPhone Lock Screen](assets/screenshots/iphone-lock-screen.jpg)
 
 ### ➕ Add Medication Page  
-![Add Medication](assets/screenshots/add-medication.png)
+![Add Medication](assets/screenshots/add-medication.jpg)
 
 ### ✅ Medication Added Successfully  
-![Medication Added](assets/screenshots/medication-added.png)
+![Medication Added](assets/screenshots/medication-added.jpg)
 
 ### ⚡ Quick Actions Page  
-![Quick Actions](assets/screenshots/quick-actions.png)
+![Quick Actions](assets/screenshots/quick-actions.jpg)
 
 ### 🗓️ Calendar View  
-![Calendar View](assets/screenshots/calendar.png)
+![Calendar View](assets/screenshots/calendar.jpg)
 
 ### 💊 Refill Tracker Page  
-![Refill Tracker](assets/screenshots/refill-tracker.png)
+![Refill Tracker](assets/screenshots/refill-tracker.jpg)
 
 ### 📜 History Log Page  
-![History Log](assets/screenshots/history-log.png)
+![History Log](assets/screenshots/history-log.jpg)
+
