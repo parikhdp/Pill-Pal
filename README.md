@@ -66,26 +66,26 @@ To run this project locally:
 ## 📸 App Screenshots
 
 ### 🔐 Authentication Page  
-![Authentication Page](assets/screenshots/authentication-page.jpg)
+<img src="assets/screenshots/authentication-page.jpg" alt="Authentication Page" width="300"/>
 
 ### 🔓 iPhone Lock Screen (Password Entry)  
-![iPhone Lock Screen](assets/screenshots/iphone-lock-screen.jpg)
+<img src="assets/screenshots/iphone-lock-screen.jpg" alt="iPhone Lock Screen" width="300"/>
 
 ### ➕ Add Medication Page  
-![Add Medication](assets/screenshots/add-medication.jpg)
+<img src="assets/screenshots/add-medication.jpg" alt="Add Medication" width="300"/>
 
 ### ✅ Medication Added Successfully  
-![Medication Added](assets/screenshots/medication-added.jpg)
+<img src="assets/screenshots/medication-added.jpg" alt="Medication Added" width="300"/>
 
 ### ⚡ Quick Actions Page  
-![Quick Actions](assets/screenshots/quick-actions.jpg)
+<img src="assets/screenshots/quick-actions.jpg" alt="Quick Actions" width="300"/>
 
 ### 🗓️ Calendar View  
-![Calendar View](assets/screenshots/calendar.jpg)
+<img src="assets/screenshots/calendar.jpg" alt="Calendar View" width="300"/>
 
 ### 💊 Refill Tracker Page  
-![Refill Tracker](assets/screenshots/refill-tracker.jpg)
+<img src="assets/screenshots/refill-tracker.jpg" alt="Refill Tracker" width="300"/>
 
 ### 📜 History Log Page  
-![History Log](assets/screenshots/history-log.jpg)
+<img src="assets/screenshots/history-log.jpg" alt="History Log" width="300"/>
 
