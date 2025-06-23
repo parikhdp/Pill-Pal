@@ -1,50 +1,90 @@
-# Welcome to your Expo app 👋
+# 💊 Pill-Pal
 
-This is an [Expo](https://expo.dev) project created with [`create-expo-app`](https://www.npmjs.com/package/create-expo-app).
+**Pill-Pal** is a cross-platform medication management app built with React Native and Expo. It helps users stay on top of their health by offering custom medication reminders, refill tracking, biometric authentication, and a sleek, modern interface.
 
-## Get started
+---
 
-1. Install dependencies
+## ✨ Features
 
+- ⏰ **Medication Scheduling** – Set custom times for reminders and doses  
+- 📦 **Refill Tracking** – Get low supply alerts and manage stock levels  
+- 📲 **Cross-Platform Compatibility** – Works seamlessly on both Android and iOS  
+- 🔒 **Biometric Authentication** – Secure access using Face ID or Touch ID  
+- 📈 **Progress Tracking** – Log daily medication intake and visualize adherence  
+- 📅 **Calendar Integration** – View and manage upcoming doses in a calendar format  
+- 🔐 **Secure Local Storage** – Uses AsyncStorage for on-device data persistence  
+
+---
+
+## 🛠️ Tech Stack
+
+| Technology             | Purpose                                |
+|------------------------|----------------------------------------|
+| **React Native**       | Cross-platform mobile app framework    |
+| **Expo**               | Rapid development and deployment       |
+| **TypeScript**         | Type-safe JavaScript                   |
+| **React Navigation**   | Screen navigation and routing          |
+| **Expo Notifications** | Local push notifications               |
+| **AsyncStorage**       | Local storage of user data             |
+| **Reanimated**         | Smooth and performant animations       |
+
+---
+
+## 📚 What You'll Learn
+
+- Fundamentals of **React Native** and **Expo**
+- Integrating **biometric authentication** (Face ID/Touch ID)
+- Implementing **local push notifications**
+- Managing **local data securely** with AsyncStorage
+- Designing **calendar-based scheduling systems**
+- Structuring a mobile app with **clean UI/UX principles**
+- Creating **cross-platform responsive interfaces**
+
+---
+
+## 🧪 Project Highlights
+
+- Medication reminder system with **custom time slots**
+- Refill tracking with **real-time alerts**
+- Daily progress **visualized through UI elements**
+- Secure user authentication using **biometric methods**
+- Calendar interface for **dose tracking and management**
+- Clean, modern, and responsive **mobile UI design**
+
+---
+
+## 🚀 Getting Started
+
+To run this project locally:
+
+1. **Clone the repository**
    ```bash
-   npm install
-   ```
+   git clone https://github.com/yourusername/pill-pal.git
+   cd pill-pal
 
-2. Start the app
 
-   ```bash
-   npx expo start
-   ```
+## 📸 App Screenshots
 
-In the output, you'll find options to open the app in a
+### 🔐 Authentication Page  
+![Authentication Page](assets/screenshots/authentication-page.png)
 
-- [development build](https://docs.expo.dev/develop/development-builds/introduction/)
-- [Android emulator](https://docs.expo.dev/workflow/android-studio-emulator/)
-- [iOS simulator](https://docs.expo.dev/workflow/ios-simulator/)
-- [Expo Go](https://expo.dev/go), a limited sandbox for trying out app development with Expo
+### 🔓 iPhone Lock Screen (Password Entry)  
+![iPhone Lock Screen](assets/screenshots/iphone-lock-screen.png)
 
-You can start developing by editing the files inside the **app** directory. This project uses [file-based routing](https://docs.expo.dev/router/introduction).
+### ➕ Add Medication Page  
+![Add Medication](assets/screenshots/add-medication.png)
 
-## Get a fresh project
+### ✅ Medication Added Successfully  
+![Medication Added](assets/screenshots/medication-added.png)
 
-When you're ready, run:
+### ⚡ Quick Actions Page  
+![Quick Actions](assets/screenshots/quick-actions.png)
 
-```bash
-npm run reset-project
-```
+### 🗓️ Calendar View  
+![Calendar View](assets/screenshots/calendar.png)
 
-This command will move the starter code to the **app-example** directory and create a blank **app** directory where you can start developing.
+### 💊 Refill Tracker Page  
+![Refill Tracker](assets/screenshots/refill-tracker.png)
 
-## Learn more
-
-To learn more about developing your project with Expo, look at the following resources:
-
-- [Expo documentation](https://docs.expo.dev/): Learn fundamentals, or go into advanced topics with our [guides](https://docs.expo.dev/guides).
-- [Learn Expo tutorial](https://docs.expo.dev/tutorial/introduction/): Follow a step-by-step tutorial where you'll create a project that runs on Android, iOS, and the web.
-
-## Join the community
-
-Join our community of developers creating universal apps.
-
-- [Expo on GitHub](https://github.com/expo/expo): View our open source platform and contribute.
-- [Discord community](https://chat.expo.dev): Chat with Expo users and ask questions.
+### 📜 History Log Page  
+![History Log](assets/screenshots/history-log.png)
