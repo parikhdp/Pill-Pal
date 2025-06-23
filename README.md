@@ -62,30 +62,29 @@ To run this project locally:
    git clone https://github.com/yourusername/pill-pal.git
    cd pill-pal
 
-
 ## 📸 App Screenshots
 
 ### 🔐 Authentication Page  
-<img src="assets/screenshots/authentication-page.jpg" alt="Authentication Page" width="300"/>
+<img src="assets/screenshots/authentication-page.jpg" alt="Authentication Page" width="240"/>
 
 ### 🔓 iPhone Lock Screen (Password Entry)  
-<img src="assets/screenshots/iphone-lock-screen.jpg" alt="iPhone Lock Screen" width="300"/>
+<img src="assets/screenshots/iphone-lock-screen.jpg" alt="iPhone Lock Screen" width="240"/>
 
 ### ➕ Add Medication Page  
-<img src="assets/screenshots/add-medication.jpg" alt="Add Medication" width="300"/>
+<img src="assets/screenshots/add-medication.jpg" alt="Add Medication" width="240"/>
 
 ### ✅ Medication Added Successfully  
-<img src="assets/screenshots/medication-added.jpg" alt="Medication Added" width="300"/>
+<img src="assets/screenshots/medication-added.jpg" alt="Medication Added" width="240"/>
 
 ### ⚡ Quick Actions Page  
-<img src="assets/screenshots/quick-actions.jpg" alt="Quick Actions" width="300"/>
+<img src="assets/screenshots/quick-actions.jpg" alt="Quick Actions" width="240"/>
 
 ### 🗓️ Calendar View  
-<img src="assets/screenshots/calendar.jpg" alt="Calendar View" width="300"/>
+<img src="assets/screenshots/calendar.jpg" alt="Calendar View" width="240"/>
 
 ### 💊 Refill Tracker Page  
-<img src="assets/screenshots/refill-tracker.jpg" alt="Refill Tracker" width="300"/>
+<img src="assets/screenshots/refill-tracker.jpg" alt="Refill Tracker" width="240"/>
 
 ### 📜 History Log Page  
-<img src="assets/screenshots/history-log.jpg" alt="History Log" width="300"/>
+<img src="assets/screenshots/history-log.jpg" alt="History Log" width="240"/>
 
