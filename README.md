@@ -30,18 +30,6 @@
 
 ---
 
-## 📚 What You'll Learn
-
-- Fundamentals of **React Native** and **Expo**
-- Integrating **biometric authentication** (Face ID/Touch ID)
-- Implementing **local push notifications**
-- Managing **local data securely** with AsyncStorage
-- Designing **calendar-based scheduling systems**
-- Structuring a mobile app with **clean UI/UX principles**
-- Creating **cross-platform responsive interfaces**
-
----
-
 ## 🧪 Project Highlights
 
 - Medication reminder system with **custom time slots**
